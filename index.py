@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 from typing import List
 
 app = FastAPI()
@@ -23,9 +24,11 @@ marks_data = {
     "Eve": 88,
 }
 
-@app.get("/")
-def get_marks(name: List[str] = None):
-    if name:
-        marks = [marks_data.get(n.strip(), "Not Found") for n in name]
-        return JSONResponse(content={"marks": marks})
-    return {"message": "Please provide student names"}
+class StudentNames(BaseModel):
+    names: List[str]
+
+@app.post("/")
+def get_marks(data: StudentNames):
+    names = data.names
+    marks = [marks_data.get(n.strip(), "Not Found") for n in names]
+    return JSONResponse(content={"marks": marks})
