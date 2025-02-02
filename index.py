@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
@@ -21,10 +21,9 @@ marks_data = {
     "Charlie": 78,
     "David": 92,
     "Eve": 88,
-    # Add more students and marks as needed
 }
 
-@app.get("/api")
+@app.get("/")
 def get_marks(name: List[str] = None):
     if name:
         marks = [marks_data.get(n.strip(), "Not Found") for n in name]
