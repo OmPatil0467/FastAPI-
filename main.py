@@ -1,8 +1,25 @@
-# main.py
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+import json
 
 app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {"message": "Hello, World!"}
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"]
+)
+
+# Load student marks from the JSON file
+def load_marks():
+    with open("q-vercel-python.json", "r") as file:
+        data = json.load(file)
+    return {student["name"]: student["marks"] for student in data}
+
+marks_data = load_marks()
+
+@app.get("/api")
+def get_marks(name: list[str]):
+    return {"marks": [marks_data.get(n, None) for n in name]}
