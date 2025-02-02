@@ -20,12 +20,13 @@ marks_data = {
     "Charlie": 78,
     "David": 92,
     "Eve": 88,
+    # Add more students and marks as needed
 }
 
 @app.get("/api")
-def get_marks(names: str = ""):
-    if names:
-        names_list = names.split(",")
-        marks = [marks_data.get(n.strip(), "Not Found") for n in names_list]
+def get_marks(name: str = None):
+    if name:
+        names = name.split(",")
+        marks = [marks_data.get(n, "Not Found") for n in names]
         return JSONResponse(content={"marks": marks})
-    return JSONResponse(content={"message": "Please provide student names"}, status_code=400)
+    return {"message": "Please provide student names"}
