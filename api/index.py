@@ -13,7 +13,7 @@ app.add_middleware(
     allow_methods=["*"]
 )
 
-# Load student marks
+# Load student marks from the JSON file
 def load_marks():
     json_path = os.path.join(os.path.dirname(__file__), "../q-vercel-python.json")
     with open(json_path, "r") as file:
